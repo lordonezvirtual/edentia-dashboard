@@ -33,3 +33,4 @@ backend/public/downloads/proyectos/*
 *.sw?
 
 .vercel
+.env*
