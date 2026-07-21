@@ -7,7 +7,13 @@ import {
   Cpu, LayoutDashboard, Brain, FolderKanban, ShieldCheck, Sun, Moon
 } from 'lucide-react';
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = window.location.hostname === 'localhost' 
+  ? 'http://localhost:5000/api' 
+  : '/api';
+
+const DOWNLOAD_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:5000'
+  : '';
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -609,7 +615,7 @@ function App() {
                             {/* DOWNLOAD ACTION LINKS */}
                             <div className="grid grid-cols-2 gap-2 pt-2">
                               <a 
-                                href={`http://localhost:5000${leadProposal ? leadProposal.ruta_archivo_word : '#'}`} 
+                                href={`${DOWNLOAD_BASE}${leadProposal ? leadProposal.ruta_archivo_word : '#'}`} 
                                 download 
                                 className="flex items-center justify-center space-x-1.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 py-1.5 px-3 rounded-lg text-xs font-bold transition-colors"
                               >
@@ -617,7 +623,7 @@ function App() {
                                 <span>Propuesta Word</span>
                               </a>
                               <a 
-                                href={`http://localhost:5000${project.ruta_excel_plan}`} 
+                                href={`${DOWNLOAD_BASE}${project.ruta_excel_plan}`} 
                                 download 
                                 className="flex items-center justify-center space-x-1.5 bg-blue-600 hover:bg-blue-700 text-white py-1.5 px-3 rounded-lg text-xs font-bold transition-colors"
                               >

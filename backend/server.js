@@ -12,8 +12,10 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static downloads
-const publicDir = path.join(__dirname, 'public');
+// Configure paths for local vs Vercel serverless environment
+const isVercel = process.env.VERCEL === '1' || !!process.env.VERCEL;
+const tempDir = isVercel ? '/tmp' : __dirname;
+const publicDir = path.join(tempDir, 'public');
 const proposalsDir = path.join(publicDir, 'downloads', 'propuestas');
 const projectsDir = path.join(publicDir, 'downloads', 'proyectos');
 
@@ -21,6 +23,25 @@ fs.mkdirSync(proposalsDir, { recursive: true });
 fs.mkdirSync(projectsDir, { recursive: true });
 
 app.use(express.static(publicDir));
+
+// Dynamic download routes to support Vercel serverless function storage
+app.get('/downloads/propuestas/:filename', (req, res) => {
+  const filePath = path.join(proposalsDir, req.params.filename);
+  if (fs.existsSync(filePath)) {
+    res.download(filePath);
+  } else {
+    res.status(404).send('Propuesta no encontrada');
+  }
+});
+
+app.get('/downloads/proyectos/:filename', (req, res) => {
+  const filePath = path.join(projectsDir, req.params.filename);
+  if (fs.existsSync(filePath)) {
+    res.download(filePath);
+  } else {
+    res.status(404).send('Plan de trabajo no encontrado');
+  }
+});
 
 // --- HELPER FUNCTIONS FOR FILE GENERATION ---
 
@@ -485,6 +506,10 @@ app.post('/api/agents/run', async (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Backend server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
