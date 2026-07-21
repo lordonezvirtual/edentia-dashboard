@@ -1,0 +1,33 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Vite / React build output
+frontend/dist/
+frontend/node_modules/
+frontend/.vite/
+
+# Backend configuration & environment
+backend/node_modules/
+backend/.env
+
+# Temporary / Generated files
+*.log
+.DS_Store
+Thumbs.db
+backend/public/downloads/propuestas/*
+backend/public/downloads/proyectos/*
+!backend/public/downloads/propuestas/.gitkeep
+!backend/public/downloads/proyectos/.gitkeep
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
