@@ -31,3 +31,5 @@ backend/public/downloads/proyectos/*
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
